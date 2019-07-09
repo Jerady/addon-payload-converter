@@ -1,3 +1,17 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+    }
+}
+
+plugins {
+  id 'application'
+  id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
@@ -7,15 +21,6 @@ version=artifactVersion
 group=artifactGroupId
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
-    }
-}
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'de.jensd.extensions.demo.App'
@@ -30,6 +35,10 @@ repositories {
     }
 }
 
+javafx {
+    version = "12.0.1"
+    modules = [ 'javafx.base' ]
+}
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -86,9 +95,10 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.6'
     compile 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     compile 'com.cirruslink.sparkplug:sparkplug-java:1.1.11'
+    compile 'org.msgpack:msgpack-core:0.8.17'
     testCompile 'junit:junit:4.10'
 }
 
-task wrapper(type: Wrapper) {
+wrapper {
     gradleVersion = '4.6'
 }
